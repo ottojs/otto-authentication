@@ -14,14 +14,14 @@ var app = express();
 
 // Public Route
 app.get('/public', function (req, res) {
-  res.send(200, { public_page : true });
+  res.status(200).send({ public_page : true });
 });
 
 // Protected Route (bob/bobisthebest)
 app.get('/protected', [
   otto_authentication.http_basic('bob', 'bobisthebest'),
   function (req, res) {
-    res.send(200, { protected_page : true });
+    res.status(200).send({ protected_page : true });
   }
 ]);
 
