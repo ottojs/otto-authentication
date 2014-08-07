@@ -25,6 +25,19 @@ app.get('/protected', [
   }
 ]);
 
+// Protected Route custom
+app.get('/custom', [
+  otto_authentication.custom(function (req, allow) {
+    if (req.query.letmein && req.query.letmein === 'now') {
+      return allow(true);
+    }
+    allow(false);
+  }),
+  function (req, res) {
+    res.status(200).send({ custom_authentication : true });
+  }
+]);
+
 // Handle Errors
 otto.error_handler(app);
 
@@ -71,7 +84,7 @@ describe('Authentication Module', function () {
 
   });
 
-  describe('Protected Route', function () {
+  describe('HTTP Basic Protected Route', function () {
 
     it('should deny a request without credentials', function (done) {
       request.get('/protected')
@@ -143,6 +156,34 @@ describe('Authentication Module', function () {
         .expect('Content-Type', /json/)
         .expect(200)
         .expect({ protected_page : true })
+        .end(done);
+    });
+
+  });
+
+  describe('Custom Authentication', function () {
+
+    it('should deny a request without query "letmein"', function (done) {
+      request.get('/custom')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(401)
+        .expect({
+          error : {
+            type    : 'client',
+            name    : 'ErrorUnauthorized',
+            message : 'Authentication Failed'
+          }
+        })
+        .end(done);
+    });
+
+    it('should allow a request when query "letmein" is set to "now"', function (done) {
+      request.get('/custom?letmein=now')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .expect({ custom_authentication : true })
         .end(done);
     });
 
