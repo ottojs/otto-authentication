@@ -70,14 +70,19 @@ describe('Authentication Module', function () {
 
   describe('Protected Route', function () {
 
-    
-
     it('should deny a request without credentials', function (done) {
       request.get('/protected')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(401)
-        .expect({ error : { message : 'Authentication Failed' } })
+        .expect({
+          error : {
+            status  : 401,
+            type    : 'client',
+            name    : 'ErrorUnauthorized',
+            message : 'Authentication Failed',
+          }
+        })
         .end(done);
     });
 
@@ -87,7 +92,14 @@ describe('Authentication Module', function () {
         .auth(incorrect_username, incorrect_password)
         .expect('Content-Type', /json/)
         .expect(401)
-        .expect({ error : { message : 'Authentication Failed' } })
+        .expect({
+          error : {
+            status  : 401,
+            type    : 'client',
+            name    : 'ErrorUnauthorized',
+            message : 'Authentication Failed',
+          }
+        })
         .end(done);
     });
 
@@ -97,7 +109,14 @@ describe('Authentication Module', function () {
         .auth(incorrect_username, correct_password)
         .expect('Content-Type', /json/)
         .expect(401)
-        .expect({ error : { message : 'Authentication Failed' } })
+        .expect({
+          error : {
+            status  : 401,
+            type    : 'client',
+            name    : 'ErrorUnauthorized',
+            message : 'Authentication Failed',
+          }
+        })
         .end(done);
     });
 
@@ -107,7 +126,14 @@ describe('Authentication Module', function () {
         .auth(correct_username, incorrect_password)
         .expect('Content-Type', /json/)
         .expect(401)
-        .expect({ error : { message : 'Authentication Failed' } })
+        .expect({
+          error : {
+            status  : 401,
+            type    : 'client',
+            name    : 'ErrorUnauthorized',
+            message : 'Authentication Failed',
+          }
+        })
         .end(done);
     });
 
