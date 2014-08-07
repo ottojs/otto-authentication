@@ -4,13 +4,13 @@
 // Modules
 require('should');
 var supertest = require('supertest');
-var express   = require('express');
+var otto      = require('otto');
 
 // Subject
 var otto_authentication = require('../lib/index.js');
 
-// New Express App
-var app = express();
+// New Otto/Express App
+var app = otto.app();
 
 // Public Route
 app.get('/public', function (req, res) {
@@ -24,6 +24,9 @@ app.get('/protected', [
     res.status(200).send({ protected_page : true });
   }
 ]);
+
+// Handle Errors
+otto.error_handler(app);
 
 // Bind SuperTest
 var request = supertest(app);
@@ -77,10 +80,9 @@ describe('Authentication Module', function () {
         .expect(401)
         .expect({
           error : {
-            status  : 401,
             type    : 'client',
             name    : 'ErrorUnauthorized',
-            message : 'Authentication Failed',
+            message : 'Authentication Failed'
           }
         })
         .end(done);
@@ -94,10 +96,9 @@ describe('Authentication Module', function () {
         .expect(401)
         .expect({
           error : {
-            status  : 401,
             type    : 'client',
             name    : 'ErrorUnauthorized',
-            message : 'Authentication Failed',
+            message : 'Authentication Failed'
           }
         })
         .end(done);
@@ -111,10 +112,9 @@ describe('Authentication Module', function () {
         .expect(401)
         .expect({
           error : {
-            status  : 401,
             type    : 'client',
             name    : 'ErrorUnauthorized',
-            message : 'Authentication Failed',
+            message : 'Authentication Failed'
           }
         })
         .end(done);
@@ -128,10 +128,9 @@ describe('Authentication Module', function () {
         .expect(401)
         .expect({
           error : {
-            status  : 401,
             type    : 'client',
             name    : 'ErrorUnauthorized',
-            message : 'Authentication Failed',
+            message : 'Authentication Failed'
           }
         })
         .end(done);
