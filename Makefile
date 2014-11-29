@@ -2,7 +2,7 @@
 
 # Default action if you just run "make"
 .PHONY: all
-all: clean install test
+all: clean install
 
 .PHONY: clean
 clean:
