@@ -10,36 +10,39 @@ var otto      = require('otto');
 var otto_authentication = require('../lib/index.js');
 
 // New Otto/Express App
-var app = otto.app();
+var app = otto.app({
+  routes : [
+    function (app) {
 
-// Public Route
-app.get('/public', function (req, res) {
-  res.status(200).send({ public_page : true });
-});
+      // Public Route
+      app.get('/public', function (req, res) {
+        res.status(200).send({ public_page : true });
+      });
 
-// Protected Route (bob/bobisthebest)
-app.get('/protected', [
-  otto_authentication.http_basic('bob', 'bobisthebest'),
-  function (req, res) {
-    res.status(200).send({ protected_page : true });
-  }
-]);
+      // Protected Route (bob/bobisthebest)
+      app.get('/protected', [
+        otto_authentication.http_basic('bob', 'bobisthebest'),
+        function (req, res) {
+          res.status(200).send({ protected_page : true });
+        }
+      ]);
 
-// Protected Route custom
-app.get('/custom', [
-  otto_authentication.custom(function (req, allow) {
-    if (req.query.letmein && req.query.letmein === 'now') {
-      return allow(true);
+      // Protected Route custom
+      app.get('/custom', [
+        otto_authentication.custom(function (req, allow) {
+          if (req.query.letmein && req.query.letmein === 'now') {
+            return allow(true);
+          }
+          allow(false);
+        }),
+        function (req, res) {
+          res.status(200).send({ custom_authentication : true });
+        }
+      ]);
+
     }
-    allow(false);
-  }),
-  function (req, res) {
-    res.status(200).send({ custom_authentication : true });
-  }
-]);
-
-// Handle Errors
-otto.error_handler(app);
+  ]
+});
 
 // Bind SuperTest
 var request = supertest(app);
