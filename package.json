@@ -8,7 +8,7 @@
     "basic-auth"  : "1.0.0"
   },
   "devDependencies" : {
-    "jshint"    : "2.5.2",
+    "jshint"    : "2.5.10",
     "mocha"     : "1.21.4",
     "should"    : "4.0.4",
     "supertest" : "0.13.0",
