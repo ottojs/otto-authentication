@@ -4,8 +4,8 @@
   "repository" : "https://github.com/ottojs/otto-authentication.git",
   "main" : "./lib/index.js",
   "dependencies" : {
-    "otto-errors" : "0.0.2",
-    "basic-auth"  : "1.0.0"
+    "basic-auth"  : "1.0.0",
+    "otto-errors" : "0.1.0"
   },
   "devDependencies" : {
     "jshint"    : "2.5.10",
