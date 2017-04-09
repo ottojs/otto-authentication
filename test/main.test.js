@@ -12,7 +12,7 @@ var otto_authentication = require('../lib/index.js');
 // New Otto/Express App
 var app = otto.app({
   routes : [
-    function (app) {
+    function (app, initialized) {
 
       // Public Route
       app.get('/public', function (req, res) {
@@ -39,6 +39,8 @@ var app = otto.app({
           res.status(200).send({ custom_authentication : true });
         }
       ]);
+
+      initialized();
 
     }
   ]
